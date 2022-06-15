@@ -1,10 +1,7 @@
-package client;
+package client.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.util.Objects;
 
 @Data
@@ -22,6 +19,12 @@ public class Person {
     //but don’t yet have an id.
     public Person(String name, String adress) {
 
+        this.name = name;
+        this.adress = adress;
+    }
+
+    public Person(long id, String name, String adress) {
+        this.id = id;
         this.name = name;
         this.adress = adress;
     }

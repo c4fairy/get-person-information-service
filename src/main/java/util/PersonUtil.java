@@ -1,7 +1,7 @@
 package util;
 
 
-import client.Person;
+import client.model.Person;
 
 public class PersonUtil {
     public static String[] getPersonSurname(Person[] persons) {
