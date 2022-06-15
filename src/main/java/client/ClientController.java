@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@RestController
 public class ClientController {
 
+    RestTemplate restTemplate = new RestTemplate();
     @GetMapping("/getAllPersons")
     List<Person> getAllPersons(RestTemplate restTemplate) {
         Person[] persons = restTemplate.getForObject("http://localhost:8080//persons/", Person[].class);
@@ -18,26 +20,26 @@ public class ClientController {
     }
 
     @PostMapping("/createNewPerson")
-    Person createNewPerson(@RequestBody Person newPerson, RestTemplate restTemplate) {
+    Person createNewPerson(@RequestBody Person newPerson) {
         return restTemplate.postForEntity("http://localhost:8080//persons/", newPerson, Person.class).getBody();
     }
 
 
-    @GetMapping("/findPersonById")
-    Person findPersonById(@PathVariable Long id, RestTemplate restTemplate) {
+    @GetMapping("/findPersonById/{id}")
+    Person findPersonById(@PathVariable Long id) {
         return restTemplate.getForObject("http://localhost:8080//persons/" + id, Person.class);
     }
 
 
-    @PutMapping("/changePersonById")
-    Person replacePerson(@RequestBody Person newPerson, @PathVariable Long id, RestTemplate restTemplate) {
+    @PutMapping("/changePersonById/{id}")
+    Person replacePerson(@RequestBody Person newPerson, @PathVariable Long id) {
        restTemplate.put("http://localhost:8080//persons/" + id, newPerson);
-       return findPersonById(id, restTemplate);
+       return findPersonById(id);
     }
 
 
-    @DeleteMapping("/deletePersonById")
-    void deletePersonById(@PathVariable Long id, RestTemplate restTemplate){
+    @DeleteMapping("/deletePersonById/{id}")
+    void deletePersonById(@PathVariable Long id){
         restTemplate.delete("http://localhost:8080//persons/" + id);
     }
 }
