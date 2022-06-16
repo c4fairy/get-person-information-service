@@ -3,6 +3,7 @@ package client;
 import client.model.Person;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import util.PersonUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,5 +42,12 @@ public class ClientController {
     @DeleteMapping("/deletePersonById/{id}")
     void deletePersonById(@PathVariable Long id){
         restTemplate.delete("http://localhost:8080//persons/" + id);
+    }
+
+    @GetMapping("/getPersonsSurname")
+    String[] surnames(){
+        Person[] response = restTemplate
+                .getForObject("http://localhost:8080//persons", Person[].class);
+        return PersonUtil.getPersonSurname(response);
     }
 }

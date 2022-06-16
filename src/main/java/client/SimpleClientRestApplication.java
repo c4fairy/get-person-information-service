@@ -30,12 +30,7 @@ public class SimpleClientRestApplication {
         restTemplate.put("http://localhost:8081//changePersonById/" + person3.getId(), person5);
 
         log.info("\nПолучение всех Person");
-        Person[] response = restTemplate
-                .getForObject("http://localhost:8081//getAllPersons", Person[].class);
-
-        assert response != null;
-        String[] surnames = PersonUtil.getPersonSurname(response);
-        for (String surname : surnames) System.out.println("Person Surname:" + surname);
+        restTemplate.getForObject("http://localhost:8081//getAllPersons", Person[].class);
 
     }
 }
