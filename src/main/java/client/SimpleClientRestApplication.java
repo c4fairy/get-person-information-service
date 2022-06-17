@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@ConfigurationPropertiesScan
 public class SimpleClientRestApplication {
     public static void main(String[] args) {
+
 
         ClientService clientService = new ClientService();
 
