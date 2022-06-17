@@ -12,42 +12,36 @@ import java.util.List;
 @RestController
 public class ClientController {
 
+
     RestTemplate restTemplate = new RestTemplate();
-    @GetMapping("/getAllPersons")
+    String url = "";
+    @GetMapping("/persons")
     List<Person> getAllPersons(RestTemplate restTemplate) {
         Person[] persons = restTemplate.getForObject("http://localhost:8080//persons/", Person[].class);
         List<Person> personList = new ArrayList<>(Arrays.asList(persons));
         return personList;
     }
 
-    @PostMapping("/createNewPerson")
+    @PostMapping("/persons")
     Person createNewPerson(@RequestBody Person newPerson) {
         return restTemplate.postForEntity("http://localhost:8080//persons/", newPerson, Person.class).getBody();
     }
 
-
-    @GetMapping("/findPersonById/{id}")
+    @GetMapping("/persons/{id}")
     Person findPersonById(@PathVariable Long id) {
         return restTemplate.getForObject("http://localhost:8080//persons/" + id, Person.class);
     }
 
 
-    @PutMapping("/changePersonById/{id}")
+    @PutMapping("/persons/{id}")
     Person replacePerson(@RequestBody Person newPerson, @PathVariable Long id) {
        restTemplate.put("http://localhost:8080//persons/" + id, newPerson);
        return findPersonById(id);
     }
 
 
-    @DeleteMapping("/deletePersonById/{id}")
+    @DeleteMapping("/persons/{id}")
     void deletePersonById(@PathVariable Long id){
         restTemplate.delete("http://localhost:8080//persons/" + id);
-    }
-
-    @GetMapping("/getPersonsSurname")
-    String[] surnames(){
-        Person[] response = restTemplate
-                .getForObject("http://localhost:8080//persons", Person[].class);
-        return PersonUtil.getPersonSurname(response);
     }
 }

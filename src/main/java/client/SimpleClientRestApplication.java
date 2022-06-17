@@ -5,32 +5,26 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.client.RestTemplate;
-import util.PersonUtil;
+
 @Slf4j
-@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
-@EnableJpaRepositories
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class SimpleClientRestApplication {
     public static void main(String[] args) {
+
+        ClientService clientService = new ClientService();
+
         SpringApplication.run(SimpleClientRestApplication.class, args);
         RestTemplate restTemplate = new RestTemplate();
         Person person3 = new Person(3l, "Name3 Surname3", "Some address3");
         Person person4 = new Person("Name4 Surname4", "Some address4");
         Person person5 = new Person("Name5 Surname5", "Some address5");
 
-        log.info("Создание новой записи Person:");
-        restTemplate.postForEntity("http://localhost:8081//createNewPerson/", person3, Person.class);
-
-        log.info("\nСоздание новой записи Person:");
-        restTemplate.postForEntity("http://localhost:8081//createNewPerson/", person4, Person.class);
-
-
-        log.info("\nИзменение существующей записи Person:");
-        restTemplate.put("http://localhost:8081//changePersonById/" + person3.getId(), person5);
-
-        log.info("\nПолучение всех Person");
-        restTemplate.getForObject("http://localhost:8081//getAllPersons", Person[].class);
-
+        clientService.createNewPerson(restTemplate, person3);
+        clientService.createNewPerson(restTemplate, person4);
+        clientService.changePerson(restTemplate, person3.getId(), person5);
+        clientService.getAllPersons(restTemplate);
+        String[] surnames = clientService.getSurnames(restTemplate);
+        for (String surname : surnames) System.out.println(surname);
     }
 }
