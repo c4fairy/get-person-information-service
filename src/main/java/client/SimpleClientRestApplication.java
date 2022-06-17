@@ -33,4 +33,9 @@ public class SimpleClientRestApplication {
         String[] surnames = clientService.getSurnames(restTemplate);
         for (String surname : surnames) System.out.println(surname);
     }
+
+    @Bean
+    public ConfigProperties getProps() {
+        return new ConfigProperties();
+    }
 }

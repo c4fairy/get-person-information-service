@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,30 +14,30 @@ import java.util.List;
 @RestController
 public class ClientController {
     RestTemplate restTemplate = new RestTemplate();
-    @Value("${url.client}")
-    private String url;
+    @Inject
+    ConfigProperties cfg;
 
     @GetMapping("/persons")
     List<Person> getAllPersons(RestTemplate restTemplate) {
-        Person[] persons = restTemplate.getForObject(url, Person[].class);
+        Person[] persons = restTemplate.getForObject(cfg.getClient(), Person[].class);
         List<Person> personList = new ArrayList<>(Arrays.asList(persons));
         return personList;
     }
 
     @PostMapping("/persons")
     Person createNewPerson(@RequestBody Person newPerson) {
-        return restTemplate.postForEntity(url, newPerson, Person.class).getBody();
+        return restTemplate.postForEntity(cfg.getClient(), newPerson, Person.class).getBody();
     }
 
     @GetMapping("/persons/{id}")
     Person findPersonById(@PathVariable Long id) {
-        return restTemplate.getForObject(url + id, Person.class);
+        return restTemplate.getForObject(cfg.getClient() + id, Person.class);
     }
 
 
     @PutMapping("/persons/{id}")
     Person replacePerson(@RequestBody Person newPerson, @PathVariable Long id) {
-        restTemplate.put(url + id, newPerson);
+        restTemplate.put(cfg.getClient() + id, newPerson);
         return findPersonById(id);
     }
 
