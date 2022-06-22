@@ -1,15 +1,12 @@
 package client;
 
-import client.config.ConfigProperties;
+import client.config.ConnectionUrlConfig;
 import client.model.Person;
-import client.service.ClientService;
+import client.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 public class SimpleClientRestApplication {
     public static void main(String[] args) {
 
-        ClientService clientService = new ClientService();
+        PersonService personService = new PersonService();
 
         SpringApplication.run(SimpleClientRestApplication.class, args);
         RestTemplate restTemplate = new RestTemplate();
@@ -26,16 +23,16 @@ public class SimpleClientRestApplication {
         Person person4 = new Person("Name4 Surname4", "Some address4");
         Person person5 = new Person("Name5 Surname5", "Some address5");
 
-        clientService.createNewPerson(restTemplate, person3);
-        clientService.createNewPerson(restTemplate, person4);
-        clientService.changePerson(restTemplate, person3.getId(), person5);
-        clientService.getAllPersons(restTemplate);
-        String[] surnames = clientService.getSurnames(restTemplate);
+        personService.createNewPerson(restTemplate, person3);
+        personService.createNewPerson(restTemplate, person4);
+        personService.changePerson(restTemplate, person3.getId(), person5);
+        personService.getAllPersons(restTemplate);
+        String[] surnames = personService.getSurnames(restTemplate);
         for (String surname : surnames) System.out.println(surname);
     }
 
     @Bean
-    public ConfigProperties getProps() {
-        return new ConfigProperties();
+    public ConnectionUrlConfig getProps() {
+        return new ConnectionUrlConfig();
     }
 }

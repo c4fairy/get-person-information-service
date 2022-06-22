@@ -5,14 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriBuilder;
 import util.PersonUtil;
 
 import java.util.Objects;
 
 @Slf4j
 @Service
-public class ClientService {
+public class PersonService {
+
     private final String url = "http://localhost:8081/persons";
 
     public String[] getSurnames(RestTemplate restTemplate) {
